@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG 智能问答</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <h2>RAG 问答</h2>
+      <button id="new-chat-btn" title="新建对话">＋</button>
+    </div>
+    <div id="session-list"></div>
+    <div class="sidebar-footer">
+      <button id="upload-btn" title="上传文档构建索引">📄 上传文档</button>
+      <input type="file" id="file-input" multiple accept=".txt,.md" hidden>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div id="chat-header">
+      <span id="current-session-label">对话</span>
+      <button id="toggle-sidebar">☰</button>
+    </div>
+
+    <div id="messages"></div>
+
+    <div id="input-area">
+      <div id="status-bar" class="hidden">
+        <span class="spinner"></span>
+        <span id="status-text">处理中...</span>
+      </div>
+      <div id="input-row">
+        <textarea id="question-input" rows="1" placeholder="输入您的问题..." enterkeyhint="send"></textarea>
+        <button id="send-btn">发送</button>
+      </div>
+      <label class="option-row">
+        <input type="checkbox" id="multi-hop">
+        <span>启用 Multi-Hop（问题拆分）</span>
+      </label>
+    </div>
+  </main>
+</div>
+
+<div id="upload-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>上传文档</h3>
+    <p>选择 .txt 或 .md 文件上传，将自动分块并构建索引。</p>
+    <div id="drop-zone">拖放文件到此处，或点击选择文件</div>
+    <input type="file" id="modal-file-input" multiple accept=".txt,.md" hidden>
+    <ul id="file-list"></ul>
+    <button id="upload-submit" disabled>构建索引</button>
+    <div id="upload-status"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>

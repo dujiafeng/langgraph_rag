@@ -1,0 +1,37 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Environment
+.env
+
+# Data / indices
+data/vector_store/
+data/bm25_index.pkl
+src/data/
+scripts/data/
+
+# LangGraph generated
+.langgraph_api/
+
+# Cloned submodule
+chat-ui/
+
+# Local config
+.npmrc
+
+# Temp docs
+设计文档.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

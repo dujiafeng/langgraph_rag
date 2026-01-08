@@ -1,0 +1,33 @@
+[project]
+name = "langgraph-rag"
+version = "0.1.0"
+description = "LangGraph orchestrated RAG pipeline with query optimization"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.4",
+    "langchain>=0.3",
+    "langchain-openai>=0.3",
+    "langchain-community>=0.3",
+    "langsmith>=0.3",
+    "chromadb>=0.6",
+    "rank-bm25>=0.2",
+    "sentence-transformers>=3.4",
+    "numpy>=2.0",
+    "python-dotenv>=1.0",
+    "pydantic-settings>=2.7",
+    "pydantic>=2.10",
+    "jieba>=0.42",
+    "scikit-learn>=1.6",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.34",
+    "python-multipart>=0.0.20",
+    "dashscope>=1.25.21",
+]
+
+[dependency-groups]
+dev = ["langgraph-cli[inmem]>=0.2"]
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
