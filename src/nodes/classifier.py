@@ -19,13 +19,13 @@ _CLASSIFY_PROMPT = (
 
 
 def should_use_rag(state: RAGState) -> Literal["rag", "chat"]:
-    return state.query_type
+    return state.query_type  # 返回分类结果，用于条件路由
 
 
 def classify_query(state: RAGState) -> RAGState:
     logger.info(f"Classifying query: {state.original_question}")
-    response = get_llm().invoke(_CLASSIFY_PROMPT.format(question=state.original_question))
+    response = get_llm().invoke(_CLASSIFY_PROMPT.format(question=state.original_question))  # 调 LLM 分类
     result = response.content.strip().lower()
-    state.query_type = "rag" if "rag" in result else "chat"
+    state.query_type = "rag" if "rag" in result else "chat"  # 根据 LLM 输出设置类型
     logger.info(f"Query type: {state.query_type}")
     return state

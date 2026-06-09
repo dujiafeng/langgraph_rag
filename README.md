@@ -64,6 +64,41 @@ uv run python src/main.py --question "LangGraph和RAG的关系？" --multi-hop
 └── data/documents/          # 原始文档
 ```
 
+## LangGraph流程图
+
+```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph LR;
+	__start__([<p>__start__</p>]):::first
+	classify(classify)
+	rewrite(rewrite)
+	split(split)
+	retrieve(retrieve)
+	rrf(rrf)
+	rerank(rerank)
+	mmr(mmr)
+	generate(generate)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> classify;
+	classify -. &nbsp;chat&nbsp; .-> generate;
+	classify -. &nbsp;rag&nbsp; .-> rewrite;
+	mmr --> generate;
+	rerank --> mmr;
+	retrieve --> rrf;
+	rewrite -. &nbsp;False&nbsp; .-> retrieve;
+	rewrite -. &nbsp;True&nbsp; .-> split;
+	rrf --> rerank;
+	split --> retrieve;
+	generate --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+```
+
 ## 索引构建
 
 ```bash

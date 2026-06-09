@@ -13,9 +13,9 @@ def split_question(state: RAGState) -> RAGState:
         f"问题：{state.rewritten_question}"
     )
     logger.info("Splitting question into sub-questions...")
-    response = get_llm().invoke(prompt)
-    sub_qs = [q.strip() for q in response.content.split("\n") if q.strip()]
+    response = get_llm().invoke(prompt)  # 用 LLM 拆解复杂问题
+    sub_qs = [q.strip() for q in response.content.split("\n") if q.strip()]  # 按行解析子问题
     state.sub_questions = sub_qs
-    state.sub_results = [[] for _ in sub_qs]
+    state.sub_results = [[] for _ in sub_qs]  # 为每个子问题预留结果列表
     logger.info(f"Sub-questions: {sub_qs}")
     return state
