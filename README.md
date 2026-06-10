@@ -2,7 +2,7 @@
 
 面向**高考志愿填报场景**的智能问答系统，基于 **LangGraph** 可编排 RAG 流水线，集成查询分类、混合检索、重排序与多样性筛选。内置 20 所高校、24 个热门专业、录取分数线、就业数据等知识库。
 
-## LangGraph 流程图
+## langGraph流程图
 
 ```mermaid
 ---
@@ -35,20 +35,7 @@ graph LR;
 	classDef default fill:#f2f0ff,line-height:1.2
 	classDef first fill-opacity:0
 	classDef last fill:#bfb6fc
-```
 
-### 节点说明
-
-| 节点 | 输入 | 输出 | 说明 |
-|------|------|------|------|
-| `classify` | original_question | query_type (rag/chat) | LLM 判断需要检索还是闲聊 |
-| `rewrite` | original_question | rewritten_question | 优化查询语句适配检索 |
-| `split` | rewritten_question | sub_questions | 分解复杂问题为 2-3 个子问题 |
-| `retrieve` | rewritten_question / sub_questions | dense_results, sparse_results | 同时调 Chroma + BM25 |
-| `rrf` | dense_results, sparse_results | fused_results | Reciprocal Rank Fusion 加权排序 |
-| `rerank` | fused_results | reranked_results | Cross-encoder 对前 50 条精排 |
-| `mmr` | reranked_results | final_docs | 兼顾相关性和多样性 |
-| `generate` | final_docs | final_answer | DeepSeek 生成最终回答 |
 
 ## 技术栈
 
@@ -155,6 +142,19 @@ uv run python src/main.py --question "计算机和口腔医学哪个更好？" -
 ├── start_dev_server.cmd    # 一键启动 LangGraph API 开发服务器
 └── pyproject.toml           # 项目配置与依赖管理
 ```
+
+### 节点说明
+
+| 节点 | 输入 | 输出 | 说明 |
+|------|------|------|------|
+| `classify` | original_question | query_type (rag/chat) | LLM 判断需要检索还是闲聊 |
+| `rewrite` | original_question | rewritten_question | 优化查询语句适配检索 |
+| `split` | rewritten_question | sub_questions | 分解复杂问题为 2-3 个子问题 |
+| `retrieve` | rewritten_question / sub_questions | dense_results, sparse_results | 同时调 Chroma + BM25 |
+| `rrf` | dense_results, sparse_results | fused_results | Reciprocal Rank Fusion 加权排序 |
+| `rerank` | fused_results | reranked_results | Cross-encoder 对前 50 条精排 |
+| `mmr` | reranked_results | final_docs | 兼顾相关性和多样性 |
+| `generate` | final_docs | final_answer | DeepSeek 生成最终回答 |
 
 ## 索引构建
 
