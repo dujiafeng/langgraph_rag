@@ -2,12 +2,40 @@
 
 面向**高考志愿填报场景**的智能问答系统，基于 **LangGraph** 可编排 RAG 流水线，集成查询分类、混合检索、重排序与多样性筛选。内置 20 所高校、24 个热门专业、录取分数线、就业数据等知识库。
 
-## 流水线流程
+## langGraph流程图
 
-```
-用户问题 → 分类器(rag/chat) → rag: 改写 → [多跳拆分] → 混合检索 → RRF融合 → Cross-encoder重排 → MMR筛选 → 生成答案
-                               └→ chat: 直接回答 ────────────────────────────────────────────────────────────→
-```
+```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph LR;
+	__start__([<p>__start__</p>]):::first
+	classify(classify)
+	rewrite(rewrite)
+	split(split)
+	retrieve(retrieve)
+	rrf(rrf)
+	rerank(rerank)
+	mmr(mmr)
+	generate(generate)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> classify;
+	classify -. &nbsp;chat&nbsp; .-> generate;
+	classify -. &nbsp;rag&nbsp; .-> rewrite;
+	mmr --> generate;
+	rerank --> mmr;
+	retrieve --> rrf;
+	rewrite -. &nbsp;False&nbsp; .-> retrieve;
+	rewrite -. &nbsp;True&nbsp; .-> split;
+	rrf --> rerank;
+	split --> retrieve;
+	generate --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+
 
 ## 技术栈
 
@@ -113,41 +141,6 @@ uv run python src/main.py --question "计算机和口腔医学哪个更好？" -
 ├── start_chat_server.cmd   # 一键启动 FastAPI 聊天（含 LangSmith 追踪）
 ├── start_dev_server.cmd    # 一键启动 LangGraph API 开发服务器
 └── pyproject.toml           # 项目配置与依赖管理
-```
-
-## LangGraph 流程图
-
-```mermaid
----
-config:
-  flowchart:
-    curve: linear
----
-graph LR;
-	__start__([<p>__start__</p>]):::first
-	classify(classify)
-	rewrite(rewrite)
-	split(split)
-	retrieve(retrieve)
-	rrf(rrf)
-	rerank(rerank)
-	mmr(mmr)
-	generate(generate)
-	__end__([<p>__end__</p>]):::last
-	__start__ --> classify;
-	classify -. &nbsp;chat&nbsp; .-> generate;
-	classify -. &nbsp;rag&nbsp; .-> rewrite;
-	mmr --> generate;
-	rerank --> mmr;
-	retrieve --> rrf;
-	rewrite -. &nbsp;False&nbsp; .-> retrieve;
-	rewrite -. &nbsp;True&nbsp; .-> split;
-	rrf --> rerank;
-	split --> retrieve;
-	generate --> __end__;
-	classDef default fill:#f2f0ff,line-height:1.2
-	classDef first fill-opacity:0
-	classDef last fill:#bfb6fc
 ```
 
 ### 节点说明
